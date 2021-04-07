@@ -27,7 +27,7 @@ on glm and lm object.}
 
 \item{data}{The data used by the fitted model. This argument is required
 for models with special expressions in their formula, such as
-offset, log, cbind(sucesses, trials), etc.}
+offset, log, cbind(successes, trials), etc.}
 }
 \value{
 A dataframe containing the model F statistic, numerator

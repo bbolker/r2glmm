@@ -29,7 +29,7 @@
 #'
 #' @param data The data used by the fitted model. This argument is required
 #'        for models with special expressions in their formula, such as
-#'        offset, log, cbind(sucesses, trials), etc.
+#'        offset, log, cbind(successes, trials), etc.
 #'
 #' @return A dataframe containing the model F statistic, numerator
 #'   and denominator degrees of freedom, non-centrality parameter,

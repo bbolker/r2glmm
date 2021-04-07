@@ -12,7 +12,7 @@ Description: The model R squared and semi-partial R squared for the linear and
     of computation are provided and described as follows. First, The
     Kenward-Roger approach. Due to some inconsistency between the 'pbkrtest'
     package and the 'glmmPQL' function, the Kenward-Roger approach in the
-    'r2glmm' package is limited to the LMM. Second, The method introduced
+    'r2glmm' package is limited to the LMM. Second, the method introduced
     by Nakagawa and Schielzeth (2013) <DOI:10.1111/j.2041-210x.2012.00261.x>
     and later extended by Johnson (2014) <DOI:10.1111/2041-210X.12225>.
     The 'r2glmm' package only computes marginal R squared for the LMM and does
