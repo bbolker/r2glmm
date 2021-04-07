@@ -34,7 +34,7 @@
 cmp_R2 = function(c, x, SigHat, beta, method,
                   obsperclust=NULL, nclusts=NULL){
 
-  scalar = !is.matrix(SigHat)
+  scalar_SigHat = !is.matrix(SigHat)
 
   # Compute relevant quantities for degrees of freedom
   rank.c = sum(apply(c, 2, sum))
@@ -47,7 +47,7 @@ cmp_R2 = function(c, x, SigHat, beta, method,
 
   if(toupper(method)=='NSJ') ddf = num.obs - 1
 
-  if(toupper(method)=='SGV'){
+  if(toupper(method)=='SGV') {
 
     mobs = mean(obsperclust)
     m = nclusts - mobs - 1
@@ -60,7 +60,7 @@ cmp_R2 = function(c, x, SigHat, beta, method,
   }
 
   # Compute the approximate Wald F Statistic
-  if(scalar){
+  if (scalar_SigHat) {
 
     XtXinv <- Matrix::solve(Matrix::crossprod(Xmt))
     denom = SigHat * (c%*%XtXinv%*%t(c))

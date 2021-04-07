@@ -3,11 +3,12 @@
 #' @export
 
 r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
-                           data = NULL){
+                           data = NULL) {
 
   if(is.null(data)) data = model@frame
-  if(is.null(data) & partial)
-    stop('Please specify the dataframe used to fit the model.')
+  if(is.null(data) && partial) {
+      stop('Please specify the dataframe used to fit the model.')
+  }
 
   # Get model matrices
   X = lme4::getME(model, 'X')
@@ -57,7 +58,7 @@ r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
                     Rsq = ss / (1+ss))
 
     # For partial R2 statistics:
-    if(partial == T){
+    if(partial){
 
       suppressMessages(
         expr = p <- afex::mixed(stats::formula(model),
@@ -78,7 +79,7 @@ r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
 
     }
 
-  } else if (toupper(method) == 'SGV' | toupper(method) == 'NSJ'){
+  } else if (toupper(method) == 'SGV' || toupper(method) == 'NSJ'){
 
     beta = lme4::fixef(model)
     p <- length(beta)
@@ -130,7 +131,9 @@ r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
 
       labs = attr(stats::terms(model), 'term.labels')
       if (identical(labs, "X")) {
-          ## HACK for gamm$mer objects
+          ## HACK for gamm$mer objects; true 'assign' value has been
+          ## lost due to replacement of orig formula by ~X ...
+          ## create new method for gamm4 objects?
           assign <- seq(ncol(X))
           names(assign) <- gsub("^X","",colnames(X))
           nms <- c("Model", names(assign)[-1])
