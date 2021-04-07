@@ -126,15 +126,23 @@ r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
     C[['Model']] = cbind(rep(0, p-1),diag(p-1))
 
     # For partial R2 statistics:
-    if (partial == T & p>1){
+    if (partial && p>1) {
 
-      asgn = attr(X, 'assign')
-      nmrs = 1:length(asgn)
-      assign = split(nmrs, asgn)
-      nTerms = length(assign)
       labs = attr(stats::terms(model), 'term.labels')
-      nms = c('Model', labs)
-      names(assign) = c('(Intercept)',labs)
+      if (identical(labs, "X")) {
+          ## HACK for gamm$mer objects
+          assign <- seq(ncol(X))
+          names(assign) <- gsub("^X","",colnames(X))
+          nms <- c("Model", names(assign)[-1])
+          nTerms <- ncol(X)-1
+      } else {           
+        asgn = attr(X, 'assign')
+        nmrs = 1:length(asgn)
+        assign = split(nmrs, asgn)
+        nTerms = length(assign)
+        nms = c('Model', labs)
+        names(assign) = c('(Intercept)',labs)
+      }
 
       # add the partial contrast matrices to C
       for(i in 2:(nTerms)) {
