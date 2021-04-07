@@ -3,12 +3,12 @@
 #' r2beta Compute R Squared for Mixed Models
 #'
 #' @description Computes coefficient of determination (R squared) from
-#' edwards et al., 2008 and the generalized R squared from Jaeger et al., 2016.
+#' Edwards et al., 2008 and the generalized R squared from Jaeger et al., 2016.
 #' Currently implemented for linear mixed models with
 #' \code{\link{lmer}} and \code{\link{lme}} objects. For
-#' generalized linear mixed models, only \code{\link{glmmPQL}} are supported.
+#' generalized linear mixed models, only \code{\link{glmmPQL}} models are supported.
 #'
-#' @param model a fitted mermod, lme, or glmmPQL model.
+#' @param model a fitted merMod (lme4), lme, or glmmPQL model.
 #'
 #' @param partial  if TRUE, semi-partial R squared are calculated for each
 #' fixed effect in the mixed model.
