@@ -58,7 +58,7 @@ r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
                     Rsq = ss / (1+ss))
 
     # For partial R2 statistics:
-    if(partial){
+    if(partial) {
 
       suppressMessages(
         expr = p <- afex::mixed(stats::formula(model),
