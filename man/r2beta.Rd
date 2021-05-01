@@ -2,9 +2,16 @@
 % Please edit documentation in R/r2beta_Function.R
 \name{r2beta}
 \alias{r2beta}
+\alias{r2beta.gamm4}
 \title{r2beta Compute R Squared for Mixed Models}
 \usage{
 r2beta(model, partial = TRUE, method = "sgv", data = NULL)
+r2beta.gamm4 <- function(model, partial=TRUE, method='sgv',
+                         data = NULL,
+                         formula,
+                         partial.terms=NULL,
+                         ...)
+
 }
 \arguments{
 \item{model}{a fitted merMod (lme4), lme, or glmmPQL model.}
@@ -28,6 +35,9 @@ on glm and lm object.}
 \item{data}{The data used by the fitted model. This argument is required
 for models with special expressions in their formula, such as
 offset, log, cbind(successes, trials), etc.}
+
+\item{formula}{Formula for the original model}
+
 }
 \value{
 A dataframe containing the model F statistic, numerator

@@ -16,13 +16,21 @@ r2beta.lm <- function(model, partial=TRUE, method='sgv',
     C[['Model']] = cbind(rep(0, p-1),diag(p-1))
 
     # For partial R2 statistics:
-    if (partial == T){
+    if (partial) {
+
+      ## copied from lmer (DNR!)
+      labs = attr(stats::terms(model), 'term.labels')
+      asgn = attr(X, 'assign')
+      nmrs = 1:length(asgn)
+      assign = split(nmrs, asgn)
+      nTerms = length(assign)
+      nms = c('Model', labs)
+      names(assign) = c('(Intercept)',labs)
 
       # add the partial contrast matrices to C
-      for(i in 2:(p)) {
-        C[[nms[i]]] = make.partial.C(rows=p-1, cols = p, index = i)
+      for(i in 2:(nTerms)) {
+        C[[nms[i]]] = make.partial.C(rows=p-1, cols = p, index = assign[[i]])
       }
-
     }
 
     # Compute the specified R2

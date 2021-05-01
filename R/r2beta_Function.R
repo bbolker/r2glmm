@@ -95,7 +95,7 @@
 #------------------------------------------------------------------------------#
 
 r2beta <- function(model, partial=TRUE, method='sgv',
-                   data = NULL){
+                   data = NULL, ...){
   UseMethod('r2beta')
 }
 

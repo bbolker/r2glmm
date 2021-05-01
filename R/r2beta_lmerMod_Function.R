@@ -1,5 +1,4 @@
 
-
 #' @export
 
 r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
@@ -130,22 +129,12 @@ r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
     if (partial && p>1) {
 
       labs = attr(stats::terms(model), 'term.labels')
-      if (identical(labs, "X")) {
-          ## HACK for gamm$mer objects; true 'assign' value has been
-          ## lost due to replacement of orig formula by ~X ...
-          ## create new method for gamm4 objects?
-          assign <- seq(ncol(X))
-          names(assign) <- gsub("^X","",colnames(X))
-          nms <- c("Model", names(assign)[-1])
-          nTerms <- ncol(X)-1
-      } else {           
-        asgn = attr(X, 'assign')
-        nmrs = 1:length(asgn)
-        assign = split(nmrs, asgn)
-        nTerms = length(assign)
-        nms = c('Model', labs)
-        names(assign) = c('(Intercept)',labs)
-      }
+      asgn = attr(X, 'assign')
+      nmrs = 1:length(asgn)
+      assign = split(nmrs, asgn)
+      nTerms = length(assign)
+      nms = c('Model', labs)
+      names(assign) = c('(Intercept)',labs)
 
       # add the partial contrast matrices to C
       for(i in 2:(nTerms)) {
