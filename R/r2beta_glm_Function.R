@@ -2,7 +2,8 @@
 #' @export
 
 r2beta.glm <- function(model, partial=TRUE, method='sgv',
-                       data = NULL){
+                       data = NULL, ...) {
+  check_dots(...)
 
   mod.pql = glmPQL(model)
 

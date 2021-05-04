@@ -44,13 +44,13 @@ Each interpretation can be used for model selection and is helpful for summarizi
 
 * Instructions for installation:
 
-The most up-to-date version of the r2glmm package is available on Github. To download the package from Github, after installing and loading the devtools package, run the following code from the R console:
+The most up-to-date version of the `r2glmm` package is available on Github. To install the package from Github, after installing the `remotes` package, run the following code from the R console:
 
 ```{r, eval=FALSE}
-devtools::install_github('bcjaeger/r2glmm')
+remotes::install_github('bcjaeger/r2glmm')
 ```
 
-Alternatively, There is a version of the package available on CRAN. To download the package from CRAN, run the following code from the R console:
+Alternatively, there is a version of the package available on CRAN. To install the package from CRAN, run the following code from the R console:
 
 ```{r, eval=FALSE}
 install.packages('r2glmm')
@@ -58,7 +58,7 @@ install.packages('r2glmm')
 
 * How to use this package
 
-The main function in this package is called r2beta. The r2beta function summarizes a mixed model by computing the model $R^2$ statistic and semi-partial $R^2$ statistics for each fixed predictor in the model. The r2glmm package computes $R^2$ using three definitions. Below we list the methods, their interpretation, and an example of their application:
+The main function in this package is called `r2beta`. The `r2beta` function summarizes a mixed model by computing the model $R^2$ statistic and semi-partial $R^2$ statistics for each fixed predictor in the model. The r2glmm package computes $R^2$ using three definitions. Below we list the methods, their interpretation, and an example of their application:
 
 1. $R_\beta^2$, a standardized measure of multivariate association between the fixed predictors and the observed outcome. This statistic is primarily used to select fixed effects in the linear and generalized linear mixed model.
 

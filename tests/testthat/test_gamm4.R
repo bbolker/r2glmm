@@ -10,8 +10,6 @@ if (
   b3 <- gamm4(y~s(x0)+s(x1)+s(x2),family=gaussian,
               data=dat2,random=~(1|fac))
   r2_3 <- r2beta.gamm4(b3)
-  r2_3 <- r2beta.gamm4(b3, method="kr")
-
   b4 <- lm(y~ns(x0,3)+ns(x1,3) + ns(x2,8), data=dat2)
   r2_4 <- r2beta(b4)
 
@@ -25,8 +23,10 @@ if (
                          partial.terms=c("s(x0)","s(x1)","s(x2)"),
                          data=dat2, random=~(1|fac))
 
-  b5 <- gamm4(y~x0+x1+s(x2),family=gaussian,
-              data=dat2,random=~(1|fac))
-  r2_3kr <- r2beta.gamm4(b5, method="kr")
+  test_that("KR on gamm4", {
+    expect_equal(r2_3kr$Rsq,
+        c(0.662728341545902, 0.523745379980698,
+          0.0400949752570711, 0.0382369181231837))
+  })
 
-afex::mixed(formula(b5$gam))}
+}

@@ -2,8 +2,9 @@
 #' @export
 
 r2beta.glmmPQL <- function(model, partial=TRUE, method='sgv',
-                           data = NULL){
+                           data = NULL, ...) {
 
+  check_dots(...)
   if(is.null(data)) data = model$data
 
   # Get model matrices

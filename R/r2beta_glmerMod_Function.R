@@ -3,8 +3,9 @@
 #' @export
 
 r2beta.glmerMod <- function(model, partial=TRUE, method='sgv',
-                            data = NULL){
+                            data = NULL, ...){
 
+  check_dots(...)
   if(is.null(data)) data = model@frame
 
   fam = model@resp$family

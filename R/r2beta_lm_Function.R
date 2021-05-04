@@ -2,15 +2,17 @@
 #' @export
 
 r2beta.lm <- function(model, partial=TRUE, method='sgv',
-                      data = NULL){
+                      data = NULL, ...) {
 
-    beta = stats::coef(model)
-    p = length(beta)
-    X = stats::model.matrix(model)
-    SigHat = summary(model)$sigma^2
+  check_dots(...)
 
-    # C matrix defines the Wald Test for Fixed Effects
-    C = list(); nms = c('Model', names(beta)[-1])
+  beta = stats::coef(model)
+  p = length(beta)
+  X = stats::model.matrix(model)
+  SigHat = summary(model)$sigma^2
+
+  # C matrix defines the Wald Test for Fixed Effects
+  C = list(); nms = c('Model', names(beta)[-1])
 
     # Define the model Wald statistic for all fixed effects
     C[['Model']] = cbind(rep(0, p-1),diag(p-1))

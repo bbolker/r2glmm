@@ -1,5 +1,18 @@
+#' @importFrom stats as.formula
+#' @param formula original model formula (\code{gamm4} models only)
+#' @param partial.terms (character)
 #' @rdname r2beta
-#' @export r2beta.gamm4
+#' @examples
+#' if (require(gamm4)) {
+#'    set.seed(0)
+#'    dat <- mgcv::gamSim(1,n=400,scale=2) ## simulate 4 term additive truth
+#'    dat$fac <- fac <- as.factor(sample(1:20,400,replace=TRUE))
+#'    dat$y <- dat$y + model.matrix(~fac-1)%*%rnorm(20)*0.5
+#'    br <- gamm4(y~s(x0)+x1+s(x2),data=dat,random=~(1|fac))
+#'    class(br) <- "gamm4"
+#'    r2beta(br)
+#'    r2beta(br, method="kr", formula=y~s(x0)+x1+s(x2), random=~(1|fac), data=dat)
+#' }
 #' @export
 r2beta.gamm4 <- function(model, partial=TRUE, method='sgv',
                          data = NULL,
@@ -7,12 +20,14 @@ r2beta.gamm4 <- function(model, partial=TRUE, method='sgv',
                          partial.terms=NULL,
                          ...) {
 
+  if (!requireNamespace("gamm4")) stop("must install the gamm4 package to compute R2 values for gamm4 fits")
+
   model <- model$mer  ## do everything with the 'mer' component
 
   if (is.null(data)) {
-    data <- try(eval.parent(getCall(model)$data))
+    data <- try(eval.parent(stats::getCall(model)$data))
     if (inherits(data,"try-error") || is.null(data)) {
-      data = model.frame(model)
+      data = stats::model.frame(model)
     }
   }
 
@@ -42,7 +57,7 @@ r2beta.gamm4 <- function(model, partial=TRUE, method='sgv',
                     Rsq = ss / (1+ss)))
     }
 
-    null_model <- gamm4(update(formula, . ~ 1), ..., data=data)
+    null_model <- gamm4::gamm4(update(formula, . ~ 1), ..., data=data)
     R2 <- krfun(null_model$mer)
 
     # For partial R2 statistics:
@@ -57,7 +72,7 @@ r2beta.gamm4 <- function(model, partial=TRUE, method='sgv',
       R2_partial <- list()
       for (t0 in partial.terms) {
         reduced_form <- update(formula, as.formula(sprintf(". ~ . - %s",t0)))
-        reduced_model <- gamm4(reduced_form, data=data, ...)
+        reduced_model <- gamm4::gamm4(reduced_form, data=data, ...)
         R2_partial <- c(R2_partial, list(krfun(reduced_model$mer,t0)))
       }
       R2 <- do.call("rbind", c(list(R2), R2_partial))

@@ -2,9 +2,11 @@
 #' @export
 
 r2beta.lme <- function(model, partial=TRUE, method='sgv',
-                       data = NULL){
+                       data = NULL, ...) {
 
+  check_dots(...)
   if(is.null(data)) data = model$data
+  method <- toupper(method)
 
   # Get model matrices
   X=stats::model.matrix(stats::formula(model), data = data)
@@ -23,7 +25,7 @@ r2beta.lme <- function(model, partial=TRUE, method='sgv',
     stop('The Kenward Roger approach is only compatible with lmerMod objects.')
   }
 
-  if(toupper(method) == 'SGV' | toupper(method) == 'NSJ'){
+  if(method %in% c('SGV','NSJ')) {
 
     # Get fixed effects
     beta = nlme::fixef(model)
@@ -35,7 +37,7 @@ r2beta.lme <- function(model, partial=TRUE, method='sgv',
 
     mlist = mgcv::extract.lme.cov2(model, data, start.level=1)[['V']]
 
-    if(toupper(method)=='NSJ'){
+    if(method=='NSJ'){
 
       # NS approach takes the mean of the trace of SigHat
       SigHat = mean(diag(as.matrix(Matrix::bdiag(mlist))))
@@ -43,7 +45,7 @@ r2beta.lme <- function(model, partial=TRUE, method='sgv',
     }
 
     # SGV approach takes the standardized generalized variance of SigHat
-    if(toupper(method)=='SGV'){
+    if (method =='SGV'){
 
       SigHat = calc_sgv(nblocks = nclusts,
                         blksizes = obsperclust,

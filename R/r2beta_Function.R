@@ -10,7 +10,7 @@
 #'
 #' @param model a fitted merMod (lme4), lme, or glmmPQL model.
 #'
-#' @param partial  if TRUE, semi-partial R squared are calculated for each
+#' @param partial  if TRUE, semi-partial R squared values are calculated for each
 #' fixed effect in the mixed model.
 #'
 #' @param method Specifies the method of computation for R squared beta:
@@ -18,18 +18,24 @@
 #'            approach is applied. This method is recommended for covariance model
 #'            selection.
 #'            if \code{method} = 'kr', then the Kenward Roger approach is applied.
-#'            This option is only available for \code{\link{lme}} models.
-#'            if \code{method} = 'nsj',then the Nakagawa and Schielzeth approach
+#'            This option is only available for \code{\link{lmer}} models.
+#'            if \code{method} = 'nsj',then the Nakagawa/Schielzeth/Johnson approach
 #'            is applied. This option is available for
 #'            \code{\link{lmer}} and \code{\link{lme}} objects.
 #'            if \code{method} = 'lm', the classical R squared from the
 #'            linear model is computed. This method should only be used
-#'            on glm and lm object.
+#'            on \code{glm} and \code{lm} objects.
 #'
 #'
 #' @param data The data used by the fitted model. This argument is required
 #'        for models with special expressions in their formula, such as
 #'        offset, log, cbind(successes, trials), etc.
+#'
+#' @param \dots Additional arguments: at present this is only used for \code{gamm4}
+#' models, which do not have sufficient internal information to do the refitting necessary
+#' for partial R-squared computations when \code{method="KR"}; in this case all of the
+#' arguments required to fit the original model (e.g., \code{random} to specify the random
+#' effects) are required
 #'
 #' @return A dataframe containing the model F statistic, numerator
 #'   and denominator degrees of freedom, non-centrality parameter,

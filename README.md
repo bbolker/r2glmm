@@ -71,15 +71,15 @@ the r2glmm package.
 
   - Instructions for installation:
 
-The most up-to-date version of the r2glmm package is available on
+The most up-to-date version of the `r2glmm` package is available on
 Github. To download the package from Github, after installing and
-loading the devtools package, run the following code from the R console:
+loading the `remotes` package, run the following code from the R console:
 
 ``` r
-devtools::install_github('bcjaeger/r2glmm')
+remotes::install_github('bcjaeger/r2glmm')
 ```
 
-Alternatively, There is a version of the package available on CRAN. To
+Alternatively, there is a version of the package available on CRAN. To
 download the package from CRAN, run the following code from the R
 console:
 

@@ -2,12 +2,14 @@
 #' @export
 
 r2beta.gls <- function(model, partial=TRUE, method='sgv',
-                       data = NULL){
+                       data = NULL, ...){
 
+  check_dots(...)
+  method <- toupper(method)
 
   # The Kenward Roger Approach can't be applied to these models
-  if (toupper(method) == 'KR'){
-    stop('The Kenward Roger approach is only compatible with lmerMod objects.')
+  if (method == 'KR') {
+    stop('The Kenward-Roger approach is only compatible with lmerMod objects.')
   }
 
 
@@ -63,7 +65,7 @@ r2beta.gls <- function(model, partial=TRUE, method='sgv',
       mlist = lapply(mlist, function(x) x*vars)
     }
 
-    if(toupper(method)=='NSJ'){
+    if(method=='NSJ'){
 
       # NS approach takes the mean of the trace of SigHat
       SigHat = mean(diag(as.matrix(Matrix::bdiag(mlist))))
@@ -71,7 +73,7 @@ r2beta.gls <- function(model, partial=TRUE, method='sgv',
     }
 
     # SGV approach takes the standardized generalized variance of SigHat
-    if(toupper(method)=='SGV'){
+    if(method=='SGV'){
 
       SigHat = calc_sgv(nblocks = nclusts, vmat = mlist)
 
