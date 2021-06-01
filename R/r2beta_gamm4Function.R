@@ -1,5 +1,8 @@
 #' @importFrom stats as.formula
-#' @param formula original model formula (\code{gamm4} models only)
+#' @param formula original model formula: fixed effects only (\code{gamm4} models only)
+#' @param random original random structure
+#'
+
 #' @param partial.terms (character)
 #' @rdname r2beta
 #' @examples
@@ -17,6 +20,7 @@
 r2beta.gamm4 <- function(model, partial=TRUE, method='sgv',
                          data = NULL,
                          formula,
+                         random = NULL,
                          partial.terms=NULL,
                          ...) {
 
@@ -57,22 +61,32 @@ r2beta.gamm4 <- function(model, partial=TRUE, method='sgv',
                     Rsq = ss / (1+ss)))
     }
 
-    null_model <- gamm4::gamm4(update(formula, . ~ 1), ..., data=data)
+    ## copied from lme4
+
+    ## ugh ugh ugh ugh
+    if (is.null(random)) {
+      mstr <- deparse1(formula(model, random.only=TRUE)[-2])
+      mstr <- gsub("~","",mstr)
+      mstr <- strsplit(mstr, "\\+")[[1]]
+      mstr <- mstr[!grepl("Xr", mstr)]
+      random <- formula(paste("~", paste(mstr, collapse="+")))
+    }
+    null_model <- gamm4::gamm4(update(formula, . ~1), random = random, ..., data=data)
     R2 <- krfun(null_model$mer)
 
     # For partial R2 statistics:
     if(partial) {
 
       if (is.null(partial.terms)) {
-        warning("attempting to reconstruct terms by splitting on '+'")
+        warning("attempting to reconstruct terms by splitting on '+'; specifying 'partial.terms' manually may be more robust")
         partial.terms <- trimws(strsplit(deparse1(formula[[3]]),"\\+")[[1]])
         partial.terms <- setdiff(partial.terms, "1") ## remove intercept
       }
 
       R2_partial <- list()
       for (t0 in partial.terms) {
-        reduced_form <- update(formula, as.formula(sprintf(". ~ . - %s",t0)))
-        reduced_model <- gamm4::gamm4(reduced_form, data=data, ...)
+        reduced_form <- update(formula, as.formula(sprintf(". ~ . - (%s)",t0)))
+        reduced_model <- gamm4::gamm4(reduced_form, data=data, random = random, ...)
         R2_partial <- c(R2_partial, list(krfun(reduced_model$mer,t0)))
       }
       R2 <- do.call("rbind", c(list(R2), R2_partial))
