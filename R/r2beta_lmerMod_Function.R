@@ -3,7 +3,7 @@
 #' @export
 
 r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
-                           data = NULL, ...) {
+                           data = NULL, collapse_sigma = TRUE, ...) {
 
   check_dots(...)
 
@@ -111,7 +111,7 @@ r2beta.lmerMod <- function(model, partial=TRUE, method='sgv',
 
     }
 
-    if(toupper(method)=='SGV'){
+    if(toupper(method)=='SGV' && collapse_sigma) {
 
       # SGV approach takes standardized
       # determinant of the model covariance
